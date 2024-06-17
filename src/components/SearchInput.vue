@@ -3,8 +3,26 @@
 import { reactive } from "vue";
 
 const searchTerm = reactive({
-    query: ''
+    query: '',
+    timeout : null,
+    results: null
 });
+
+const handleSearch = ()=>{
+    clearTimeout(searchTerm.timeout);
+    searchTerm.timeout = setTimeout( async() => {
+      if(searchTerm.query !==''){
+        const res = await fetch(`http://api.weatherapi.com/v1/search.json?key=966292b88b6341a6893154620241706&q=${searchTerm.query}`)
+
+        const data = await res.json()
+        searchTerm.results = data;
+        console.log(searchTerm.results)
+      }else {
+        searchTerm.results = null;
+      }
+        
+    }, 500);
+};
 </script>
 
 <template>
@@ -18,14 +36,20 @@ const searchTerm = reactive({
           placeholder="Search for a place"
           class="rounded-r-lg p-2 border-0 outline-0 focus:ring-2 focus:ring-indigo-600 ring-inset w-full"
           v-model="searchTerm.query"
+          @input="handleSearch"
         />
       </div>
     </form>
     <!-- search suggestions -->
     <div class="bg-white my-2 rounded-lg shadow-lg">
-      <div>
-        <button class="px-3 my-2 hover:text-indigo-600 hover:font-bold w-full text-left"></button>
+      <div v-if="searchTerm.results !==null">
+        <div v-for="place in searchTerm.results" :key="place.id">
+        <button class="px-3 my-2 hover:text-indigo-600 hover:font-bold w-full text-left">
+          {{ place.name }}, {{ place.region }}, {{ place.country }}
+        </button>
+        </div>
       </div>
+      
     </div>
   </div>
 </template>
