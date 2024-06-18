@@ -23,6 +23,13 @@ const handleSearch = ()=>{
         
     }, 500);
 };
+
+const getWeather = async (id)=>{
+  const res = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=966292b88b6341a6893154620241706&q=id:${id}&days=3&aqi=no&alerts=no`)
+
+  const data = await res.json();
+  console.log(data);
+}
 </script>
 
 <template>
@@ -44,7 +51,7 @@ const handleSearch = ()=>{
     <div class="bg-white my-2 rounded-lg shadow-lg">
       <div v-if="searchTerm.results !==null">
         <div v-for="place in searchTerm.results" :key="place.id">
-        <button class="px-3 my-2 hover:text-indigo-600 hover:font-bold w-full text-left">
+        <button @click="getWeather(place.id)" class="px-3 my-2 hover:text-indigo-600 hover:font-bold w-full text-left">
           {{ place.name }}, {{ place.region }}, {{ place.country }}
         </button>
         </div>
