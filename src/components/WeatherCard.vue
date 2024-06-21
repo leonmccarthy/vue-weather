@@ -1,6 +1,7 @@
 <script setup>
 
     import BorderLine from "./BorderLine.vue"
+    import WeatherForecatDay from "./WeatherForecastDay.vue"
     defineProps({
         place: Object
     })
@@ -30,8 +31,9 @@
     <BorderLine />
 
     <!-- forecast -->
-    <div>
+    <div v-for="(day, idx) in place.forecast.forecastday" :key="idx">
       <!-- Weather daily forecast component goes here -->
+       <WeatherForecatDay :day="day"/>
     </div>
 
     <!-- info -->
