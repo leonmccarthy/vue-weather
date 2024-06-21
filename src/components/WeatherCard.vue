@@ -19,7 +19,8 @@ import BorderLine from "./BorderLine.vue"
 </script>
 
 <template>
-  <div class="text-white p-10 rounded-lg shadow-lg gap-6 mb-6 relative overflow-hidden bg-blue-500">
+  <div :class="place.current.is_day === 1 ? 'bg-day': 'bg-night'" 
+  class="text-white p-10 rounded-lg shadow-lg gap-6 mb-6 relative overflow-hidden ">
     <!-- Location & time -->
     <div class="mb-2 flex justify-between items-center">
       <div class="flex items-center justify-center gap-2">
@@ -48,12 +49,15 @@ import BorderLine from "./BorderLine.vue"
     </div>
 
     <!-- info -->
-    <div v-show="showDetail">
-      <!-- Weather info component goes here -->
-       <WeatherInfo :place="place" 
-       @close-info="showDetail = false"
-       @remove-place="removePlace(place.location.name)"/>
-    </div>
+     <Transition name="fade">
+        <div v-show="showDetail">
+        <!-- Weather info component goes here -->
+          <WeatherInfo :place="place" 
+          @close-info="showDetail = false"
+          @remove-place="removePlace(place.location.name)"/>
+        </div>
+     </Transition>
+    
 
     <!-- forecast btn -->
     <div class="flex justify-end items-center gap-1 mt-10">
@@ -61,3 +65,26 @@ import BorderLine from "./BorderLine.vue"
     </div>
   </div>
 </template>
+
+
+<style scoped>
+
+  .bg-day {
+    background-color: #8ec5fc;
+    background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
+  }
+  .bg-night {
+    background-color: #07223d;
+    background-image: linear-gradient(62deg, #0a2a4a 0%, #270845 100%);
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1.0s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+</style>
