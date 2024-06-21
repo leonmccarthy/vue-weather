@@ -18,6 +18,10 @@
 <template>
   <main>
 
+
+    <div class="text-center mb-6">
+      <h1 class="font-extrabold text-4xl">Gamify Weather</h1>
+    </div>
     <!-- Date -->
     <div class="text-center mb-6">
       {{ new Date().toLocaleDateString('en-US', {
