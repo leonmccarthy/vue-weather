@@ -9,6 +9,13 @@ import BorderLine from "./BorderLine.vue"
     })
 
     const showDetail = ref(false);
+
+    const emit = defineEmits(['delete-place']);
+
+    const removePlace = (placeName)=>{
+      emit('delete-place', placeName)
+      showDetail.value = false
+    }
 </script>
 
 <template>
@@ -43,7 +50,9 @@ import BorderLine from "./BorderLine.vue"
     <!-- info -->
     <div v-show="showDetail">
       <!-- Weather info component goes here -->
-       <WeatherInfo :place="place" @close-info="showDetail = false"/>
+       <WeatherInfo :place="place" 
+       @close-info="showDetail = false"
+       @remove-place="removePlace(place.location.name)"/>
     </div>
 
     <!-- forecast btn -->
